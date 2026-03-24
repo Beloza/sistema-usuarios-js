@@ -4,6 +4,17 @@ console.log("Siatema iniciado");
 
 function cadastrarUsuario(nome, email, senha) {
 
+    for (let usuario of usuarios) {
+        if (usuario.email === email) {
+            console.log("Email ja cadastrado");
+            return;
+        }
+    }
+
+
+
+
+
     let novoUsuario = {
         nome: nome,
         email: email,
