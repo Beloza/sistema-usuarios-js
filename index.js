@@ -11,10 +11,6 @@ function cadastrarUsuario(nome, email, senha) {
         }
     }
 
-
-
-
-
     let novoUsuario = {
         nome: nome,
         email: email,
@@ -24,5 +20,11 @@ function cadastrarUsuario(nome, email, senha) {
 
     console.log("Usuario cadastrado");
 }
-cadastrarUsuario("Antonio", "antonio@email", "1234");
-console.log(usuarios);
+
+function listarUsuarios() {
+    for (let usuario of usuarios) {
+        console.log(`Nome: ${usuario.nome} | Email: ${usuario.email});`)
+    }
+}
+cadastrarUsuario("Antonio", "antonio@email.com", "1234")
+console.log(listarUsuarios());
