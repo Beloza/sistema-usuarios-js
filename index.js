@@ -37,6 +37,19 @@ function buscarUsuario(email) {
     console.log("Usuario não encontrado");
 }
 
-console.log(cadastrarUsuario("Antonio", "antonio@email.com", "1234"))
+function login(email, senha) {
+    for (let usuario of usuarios) {
+        if (usuario.email === email && usuario.senha === senha) {
+            console.log("Login realizado");
+            return;
+        }
 
-buscarUsuario("antonio@email.com")
+    }
+    console.log("Login inválido");
+}
+
+cadastrarUsuario("Antonio", "antonio@email.com", "1234");
+
+buscarUsuario("antonio@email.com");
+
+login("antonio@email.com", "1234");
