@@ -22,6 +22,10 @@ function cadastrarUsuario(nome, email, senha) {
 }
 
 function listarUsuarios() {
+    if (usuarios.length === 0) {
+        console.log("Nenhum usuario cadastrado");
+    }
+
     for (let usuario of usuarios) {
         console.log(`Nome: ${usuario.nome} | Email: ${usuario.email});`)
     }
@@ -63,8 +67,12 @@ function deletarUsuario(email) {
 
 cadastrarUsuario("Antonio", "antonio@email.com", "1234");
 
+listarUsuarios()
+
 buscarUsuario("antonio@email.com");
 
 login("antonio@email.com", "1234");
 
 deletarUsuario("antonio@email.com");
+
+listarUsuarios();
