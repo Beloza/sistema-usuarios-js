@@ -6,8 +6,8 @@ function cadastrarUsuario(nome, email, senha) {
 
     for (let usuario of usuarios) {
         if (usuario.email === email) {
-            console.log("Email ja cadastrado");
-            return;
+            return "Email ja cadastrado";
+
         }
     }
 
@@ -18,61 +18,61 @@ function cadastrarUsuario(nome, email, senha) {
     };
     usuarios.push(novoUsuario);
 
-    console.log("Usuario cadastrado");
+    return "Usuario cadastrado";
 }
 
 function listarUsuarios() {
     if (usuarios.length === 0) {
-        console.log("Nenhum usuario cadastrado");
+        return "Nenhum usuario cadastrado";
     }
 
     for (let usuario of usuarios) {
-        console.log(`Nome: ${usuario.nome} | Email: ${usuario.email});`)
+        return `Nome: ${usuario.nome} | Email: ${usuario.email}`;
     }
 }
 
 function buscarUsuario(email) {
     for (let usuario of usuarios) {
         if (usuario.email === email) {
-            console.log("Usuario encontrado");
-            return;
+            return "Usuario encontrado";
+
         }
     }
-    console.log("Usuario não encontrado");
+    return "Usuario não encontrado";
 }
 
 function login(email, senha) {
     for (let usuario of usuarios) {
         if (usuario.email === email && usuario.senha === senha) {
-            console.log("Login realizado");
-            return;
+            return "Login realizado";
+
         }
 
     }
-    console.log("Login inválido");
+    return "Login inválido";
 }
 
 function deletarUsuario(email) {
     for (let i = 0; i < usuarios.length; i++) {
         if (usuarios[i].email === email) {
             usuarios.splice(i, 1);
-            console.log("Usuario removido");
-            return;
+            return "Usuario removido";
+
 
         }
     }
-    console.log("Usuario não encontrado");
+    return "Usuario não encontrado";
 
 }
 
-cadastrarUsuario("Antonio", "antonio@email.com", "1234");
+console.log(cadastrarUsuario("Antonio", "antonio@email.com", "1234"));
 
-listarUsuarios()
+console.log(listarUsuarios());
 
-buscarUsuario("antonio@email.com");
+console.log(buscarUsuario("antonio@email.com"));
 
-login("antonio@email.com", "1234");
+console.log(login("antonio@email.com", "1234"));
 
-deletarUsuario("antonio@email.com");
+console.log(deletarUsuario("antonio@email.com"));
 
-listarUsuarios();
+console.log(listarUsuarios());
