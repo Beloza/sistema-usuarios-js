@@ -26,5 +26,17 @@ function listarUsuarios() {
         console.log(`Nome: ${usuario.nome} | Email: ${usuario.email});`)
     }
 }
-cadastrarUsuario("Antonio", "antonio@email.com", "1234")
-console.log(listarUsuarios());
+
+function buscarUsuario(email) {
+    for (let usuario of usuarios) {
+        if (usuario.email === email) {
+            console.log("Usuario encontrado");
+            return;
+        }
+    }
+    console.log("Usuario não encontrado");
+}
+
+console.log(cadastrarUsuario("Antonio", "antonio@email.com", "1234"))
+
+buscarUsuario("antonio@email.com")
