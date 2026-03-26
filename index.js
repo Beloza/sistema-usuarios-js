@@ -3,6 +3,17 @@ let usuarios = [];
 console.log("Siatema iniciado");
 
 function cadastrarUsuario(nome, email, senha) {
+    if (!nome || nome.length < 3) {
+        return "Nome invalido(minimo 3 caracteres)";
+    }
+
+    if (!email.includes("@") || !email.includes(".")) {
+        return "Email invalido";
+    }
+
+    if (!senha || senha.length < 4) {
+        return "Senha muito curta(minimo 4 caracteres)";
+    }
 
     for (let usuario of usuarios) {
         if (usuario.email === email) {
@@ -65,14 +76,9 @@ function deletarUsuario(email) {
 
 }
 
-console.log(cadastrarUsuario("Antonio", "antonio@email.com", "1234"));
-
-console.log(listarUsuarios());
-
-console.log(buscarUsuario("antonio@email.com"));
-
-console.log(login("antonio@email.com", "1234"));
-
-console.log(deletarUsuario("antonio@email.com"));
-
-console.log(listarUsuarios());
+console.log(cadastrarUsuario("", "teste@email.com", "1234"));
+console.log(cadastrarUsuario("An", "teste@email.com", "1234"));
+console.log(cadastrarUsuario("Ana", "testeemail.com", "1234"));
+console.log(cadastrarUsuario("Ana", "teste@email.com", "12"));
+console.log(cadastrarUsuario("Ana", "teste@email.com", "1234"));
+console.log(cadastrarUsuario("Ana", "teste@email.com", "1234")); // duplicado
