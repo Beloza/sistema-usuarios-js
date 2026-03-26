@@ -48,8 +48,23 @@ function login(email, senha) {
     console.log("Login inválido");
 }
 
+function deletarUsuario(email) {
+    for (let i = 0; i < usuarios.length; i++) {
+        if (usuarios[i].email === email) {
+            usuarios.splice(i, 1);
+            console.log("Usuario removido");
+            return;
+
+        }
+    }
+    console.log("Usuario não encontrado");
+
+}
+
 cadastrarUsuario("Antonio", "antonio@email.com", "1234");
 
 buscarUsuario("antonio@email.com");
 
 login("antonio@email.com", "1234");
+
+deletarUsuario("antonio@email.com");
