@@ -1,4 +1,9 @@
+
+const SECRET = "minha_chave_secreta";
+
 let usuarios = [];
+
+const jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcrypt");
 
@@ -56,11 +61,21 @@ function listarUsuarios() {
 
 function login(email, senha) {
     for (let usuario of usuarios) {
-        if (usuario.email === email && bcrypt.compareSync(senha, usuario.senha)) {
+        if (
+            usuario.email === email &&
+            bcrypt.compareSync(senha, usuario.senha)
+        ) {
+
+            const token = jwt.sign(
+                { email: usuario.email },
+                SECRET,
+                { expiresIn: "1h" }
+            );
+
             return {
                 sucesso: true,
                 mensagem: "Login OK",
-                dados: ocultarSenha(usuario)
+                token: token
             };
         }
     }

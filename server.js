@@ -28,3 +28,31 @@ app.post("/login", (req, res) => {
 app.listen(3000, () => {
     console.log("Servidor rodando na porta 3000");
 });
+
+function verificarToken(req, res, next) {
+
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+        return res.status(401).json({
+            sucesso: false,
+            mensagem: "Token não fornecido"
+        });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    try {
+        jwt.verify(token, "minha_chave_secreta");
+        next();
+    } catch (error) {
+        return res.status(401).json({
+            sucesso: false,
+            mensagem: "Token inválido"
+        });
+    }
+}
+
+app.get("/usuarios", verificarToken, (req, res) => {
+    res.json(listarUsuarios());
+});
