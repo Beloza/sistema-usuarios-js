@@ -41,7 +41,7 @@ function cadastrarUsuario(nome, email, senha) {
     return {
         sucesso: true,
         mensagem: "Usuario cadastrado com sucesso",
-        dados: novoUsuario
+        dados: ocultarSenha(novoUsuario)
     };
 }
 
@@ -53,11 +53,16 @@ function listarUsuarios() {
             dados: []
         };
     }
+    let listaSegura = [];
+
+    for (let usuario of usuarios) {
+        listaSegura.push(ocultarSenha(usuario))
+    }
 
     return {
         sucesso: true,
         mensagem: "Lista de usuarios",
-        dados: usuarios
+        dados: listaSegura
     };
 }
 
@@ -67,7 +72,7 @@ function buscarUsuario(email) {
             return {
                 sucesso: true,
                 mensagem: "Usuario encontrado",
-                dados: usuario
+                dados: ocultarSenha(usuario)
             };
 
         }
@@ -85,7 +90,7 @@ function login(email, senha) {
             return {
                 sucesso: true,
                 mensagem: "Login realizado",
-                dados: usuario
+                dados: ocultarSenha(usuario)
             };
 
         }
@@ -105,7 +110,7 @@ function deletarUsuario(email) {
             return {
                 sucesso: true,
                 mensagem: "Usuario removido",
-                dados: removido[0]
+                dados: ocultarSenha(removido[0])
             }
 
 
@@ -115,6 +120,12 @@ function deletarUsuario(email) {
 
 }
 
+function ocultarSenha(usuario) {
+    return {
+        nome: usuario.nome,
+        email: usuario.email
+    };
+}
 let resposta;
 
 resposta = cadastrarUsuario("Antonio", "antonio@email.com", "1234");
