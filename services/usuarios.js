@@ -1,5 +1,7 @@
 let usuarios = [];
 
+const bcrypt = require("bcrypt");
+
 function ocultarSenha(usuario) {
     return {
         nome: usuario.nome,
@@ -26,10 +28,17 @@ function cadastrarUsuario(nome, email, senha) {
             return { sucesso: false, mensagem: "Email já cadastrado" };
         }
     }
+    const senhaCriptografada = bcrypt.hashSync(senha, 10);
 
-    let novoUsuario = { nome, email, senha };
+    let novoUsuario = {
+        nome,
+        email,
+        senha: senhaCriptografada
+    };
 
     usuarios.push(novoUsuario);
+
+
 
     return {
         sucesso: true,
@@ -47,7 +56,7 @@ function listarUsuarios() {
 
 function login(email, senha) {
     for (let usuario of usuarios) {
-        if (usuario.email === email && usuario.senha === senha) {
+        if (usuario.email === email && bcrypt.compareSync(senha, usuario.senha)) {
             return {
                 sucesso: true,
                 mensagem: "Login OK",
