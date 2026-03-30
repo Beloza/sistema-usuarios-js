@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Usuários</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1>Sistema de Usuários</h1>
+
+    <h2>Cadastro</h2>
+    <input id="nome" placeholder="Nome">
+    <input id="email" placeholder="Email">
+    <input id="senha" placeholder="Senha">
+    <button onclick="cadastrar()">Cadastrar</button>
+
+    <h2>Login</h2>
+    <input id="loginEmail" placeholder="Email">
+    <input id="loginSenha" placeholder="Senha">
+    <button onclick="login()">Login</button>
+
+    <h2>Usuários</h2>
+    <button onclick="listar()">Listar Usuários</button>
+
+    <ul id="listaUsuarios"></ul>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
