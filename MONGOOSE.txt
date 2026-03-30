@@ -1,0 +1,4 @@
+antonioacbss_db_user
+w4H4lKB8CMwQrvUV
+170.245.238.9
+mongodb+srv://antonioacbss_db_user:w4H4lKB8CMwQrvUV@cluster0.xmhtq14.mongodb.net/?appName=Cluster0

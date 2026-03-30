@@ -1,4 +1,6 @@
 
+const Usuario = require("../models/Usuario");
+
 require("dotenv").config();
 
 const SECRET = process.env.SECRET;
@@ -16,48 +18,46 @@ function ocultarSenha(usuario) {
     };
 }
 
-function cadastrarUsuario(nome, email, senha) {
+async function cadastrarUsuario(nome, email, senha) {
 
     if (!nome || nome.length < 3) {
         return { sucesso: false, mensagem: "Nome inválido" };
     }
 
-    if (!email.includes("@") || !email.includes(".")) {
-        return { sucesso: false, mensagem: "Email inválido" };
+    const usuarioExistente = await Usuario.findOne({ email });
+
+    if (usuarioExistente) {
+        return { sucesso: false, mensagem: "Email já cadastrado" };
     }
 
-    if (!senha || senha.length < 4) {
-        return { sucesso: false, mensagem: "Senha muito curta" };
-    }
-
-    for (let usuario of usuarios) {
-        if (usuario.email === email) {
-            return { sucesso: false, mensagem: "Email já cadastrado" };
-        }
-    }
     const senhaCriptografada = bcrypt.hashSync(senha, 10);
 
-    let novoUsuario = {
+    const novoUsuario = await Usuario.create({
         nome,
         email,
         senha: senhaCriptografada
-    };
-
-    usuarios.push(novoUsuario);
-
-
+    });
 
     return {
         sucesso: true,
         mensagem: "Usuário cadastrado",
-        dados: ocultarSenha(novoUsuario)
+        dados: {
+            nome: novoUsuario.nome,
+            email: novoUsuario.email
+        }
     };
 }
 
-function listarUsuarios() {
+async function listarUsuarios() {
+
+    const usuarios = await usuarios.find();
+
     return {
         sucesso: true,
-        dados: usuarios.map(ocultarSenha)
+        dados: usuarios.map(u => ({
+            nome: u.nome,
+            email: u.email
+        }))
     };
 }
 
@@ -90,3 +90,28 @@ module.exports = {
     listarUsuarios,
     login
 };
+
+function verificarToken(req, res, next) {
+
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+        return res.status(401).json({
+            sucesso: false,
+            mensagem: "Token não fornecido"
+        });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    try {
+        jwt.verify(token, "minha_chave_secreta");
+        next();
+    } catch (error) {
+        return res.status(401).json({
+            sucesso: false,
+            mensagem: "Token inválido"
+        });
+    }
+}
+

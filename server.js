@@ -13,14 +13,17 @@ const {
 } = require("./services/usuarios");
 
 // rotas
-app.post("/usuarios", (req, res) => {
+app.post("/usuarios", async (req, res) => {
+
     const { nome, email, senha } = req.body;
-    res.json(cadastrarUsuario(nome, email, senha));
+
+    const resposta = await cadastrarUsuario(nome, email, senha);
+
+    res.json(resposta);
 });
 
-app.get("/usuarios", (req, res) => {
-    res.json(listarUsuarios());
-});
+
+
 
 app.post("/login", (req, res) => {
     const { email, senha } = req.body;
@@ -33,29 +36,7 @@ app.listen(PORT, () => {
     console.log('Servidor rodando na porta ${PORT}');
 });
 
-function verificarToken(req, res, next) {
 
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader) {
-        return res.status(401).json({
-            sucesso: false,
-            mensagem: "Token não fornecido"
-        });
-    }
-
-    const token = authHeader.split(" ")[1];
-
-    try {
-        jwt.verify(token, "minha_chave_secreta");
-        next();
-    } catch (error) {
-        return res.status(401).json({
-            sucesso: false,
-            mensagem: "Token inválido"
-        });
-    }
-}
 
 app.get("/usuarios", verificarToken, (req, res) => {
     res.json(listarUsuarios());
@@ -92,3 +73,9 @@ function verificarToken(req, res, next) {
 app.get("/usuarios", verificarToken, (req, res) => {
     res.json(listarUsuarios());
 });
+
+const mongoose = require("mongoose");
+
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("Banco conectado"))
+    .catch(err => console.log(err));
