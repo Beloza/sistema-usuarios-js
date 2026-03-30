@@ -56,3 +56,35 @@ function verificarToken(req, res, next) {
 app.get("/usuarios", verificarToken, (req, res) => {
     res.json(listarUsuarios());
 });
+
+const jwt = require("jsonwebtoken");
+
+const SECRET = "minha_chave_secreta";
+
+function verificarToken(req, res, next) {
+
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+        return res.status(401).json({
+            sucesso: false,
+            mensagem: "Token não fornecido"
+        });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    try {
+        jwt.verify(token, SECRET);
+        next();
+    } catch (error) {
+        return res.status(401).json({
+            sucesso: false,
+            mensagem: "Token inválido"
+        });
+    }
+}
+
+app.get("/usuarios", verificarToken, (req, res) => {
+    res.json(listarUsuarios());
+});
