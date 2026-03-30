@@ -1,5 +1,7 @@
 
-const SECRET = "minha_chave_secreta";
+require("dotenv").config();
+
+const SECRET = process.env.SECRET;
 
 let usuarios = [];
 
