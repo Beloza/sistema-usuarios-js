@@ -1,9 +1,13 @@
 require("dotenv").config();
 
+const cors = require("cors");
 const express = require("express");
+const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 const {
@@ -12,39 +16,32 @@ const {
     login
 } = require("./services/usuarios");
 
-// rotas
+const SECRET = process.env.SECRET;
+
+// ROTAS
+
 app.post("/usuarios", async (req, res) => {
-
     const { nome, email, senha } = req.body;
-
     const resposta = await cadastrarUsuario(nome, email, senha);
+    res.json(resposta);
+});
+
+app.post("/login", async (req, res) => {
+    const { email, senha } = req.body;
+
+    const resposta = await login(email, senha);
+
+    console.log(resposta); // opcional pra debug
 
     res.json(resposta);
 });
 
-
-
-
-app.post("/login", (req, res) => {
-    const { email, senha } = req.body;
-    res.json(login(email, senha));
+app.get("/usuarios", verificarToken, async (req, res) => {
+    const resposta = await listarUsuarios();
+    res.json(resposta);
 });
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-    console.log('Servidor rodando na porta ${PORT}');
-});
-
-
-
-app.get("/usuarios", verificarToken, (req, res) => {
-    res.json(listarUsuarios());
-});
-
-const jwt = require("jsonwebtoken");
-
-const SECRET = "minha_chave_secreta";
+// MIDDLEWARE TOKEN
 
 function verificarToken(req, res, next) {
 
@@ -70,12 +67,17 @@ function verificarToken(req, res, next) {
     }
 }
 
-app.get("/usuarios", verificarToken, (req, res) => {
-    res.json(listarUsuarios());
-});
-
-const mongoose = require("mongoose");
+// BANCO
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("Banco conectado"))
     .catch(err => console.log(err));
+
+// SERVER
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+});
+
